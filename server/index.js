@@ -1,13 +1,13 @@
-require('dotenv').config();
-const WebSocket = require('ws');
-const OpenAI = require('openai');
+import 'dotenv/config';
+import { WebSocketServer } from 'ws';
+import OpenAI from 'openai';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || 'sk-dummy',
   baseURL: 'https://openrouter.ai/api/v1',
 });
 
-const wss = new WebSocket.Server({ port: 8081 });
+const wss = new WebSocketServer({ port: 8081 });
 
 console.log('WebSocket server started on port 8081');
 
@@ -66,7 +66,7 @@ wss.on('connection', (ws) => {
       // Production mode - use real OpenRouter API
       try {
         const stream = await openai.chat.completions.create({
-          model: 'openai/gpt-3.5-turbo',
+          model: 'openai/gpt-4o-mini',
           messages: [{ role: 'user', content: text }],
           stream: true,
           timeout: 30000,
